@@ -26,7 +26,7 @@ First things first, lets help you create an isolated environment with all of the
 
 5. Run the python shell and import tensorflow. If you are able to import tensorflow without any problems, that means everything is working perfectly and we are good to go. 
 
-           ![verification_image](https://github.com/ChetanTayal138/Model-Deployment/images/verify_tensorflow.png)
+![verification_image](https://github.com/ChetanTayal138/Model-Deployment/images/verify_tensorflow.png)
 
 
 
