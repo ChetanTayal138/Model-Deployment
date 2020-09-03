@@ -5,14 +5,16 @@ Hello and welcome to this class on model deployment! We will be going through th
 ## Pre-Requisites 
 
 
-### 1) Anaconda 
+### 1. Anaconda 
 
 First things first, lets help you create an isolated environment with all project requirements. This will prevent conflicts between different dependencies between different projects on your machine, letting you create projects in a controlled manner. My preferred environment manager for deep learning projects is conda.
 
 1. Install anaconda from https://docs.anaconda.com/anaconda/install/ 
 
     a) Windows : https://docs.anaconda.com/anaconda/install/windows/
+    
     b) Mac : https://docs.anaconda.com/anaconda/install/mac-os/
+    
     c) Linux : https://docs.anaconda.com/anaconda/install/linux/
 
 2. Check the version of your conda version to make sure it was properly installed.
@@ -32,7 +34,7 @@ First things first, lets help you create an isolated environment with all projec
 ![verification_image](https://github.com/ChetanTayal138/Model-Deployment/blob/master/images/verify_tensorflow.png)
 
 
-#### 2. Git 
+### 2. Git 
 
 Git is a version controlling tool that helps track changes in code, collaborative development and many other advantages. For now we need git just for the sake of getting this repo on your machine. For now, we need git only for cloning the repository to your machine.
 
