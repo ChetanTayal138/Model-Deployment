@@ -33,7 +33,7 @@ def generate_noisy_data(x_train, x_test, nf=0.5):
 
     return x_train_noise, x_test_noise
 
-def encoder(input_image):
+def encode(input_image):
     x = Conv2D(32, 3, activation='relu', padding='same')(input_image)
     x = MaxPooling2D((2,2), padding='same')(x)
     x = Conv2D(32, 3, activation='relu', padding='same')(x)
@@ -41,7 +41,7 @@ def encoder(input_image):
     
     return x
 
-def decoder(encoded_image):
+def decode(encoded_image):
     x = Conv2D(32,3,activation='relu',padding='same')(encoded_image)
     x = UpSampling2D((2,2))(x)
     x = Conv2D(32,3,activation='relu',padding='same')(x)
@@ -53,32 +53,67 @@ def decoder(encoded_image):
 def autoencoder(input_image, decoded):
     ae = Model(input_image, decoded)
     ae.compile(optimizer='adam', loss='binary_crossentropy')
-
     return ae
 
 
-def train():
-    x_train, x_test = load_dataset()
-    x_train_noise, x_test_noise = generate_noisy_data(x_train, x_test)
-    input_image = Input(shape=(28,28,1))
-    print(input_image.shape)
-    encoded_image = encoder(input_image)
-    print(encoded_image.shape)
-    decoded_image = decoder(encoded_image)
-    print(decoded_image.shape)
-
-    ae = autoencoder(input_image, decoded_image)
-
-    print(x_train.shape)
-    print(x_test.shape)
-    print(x_train_noise.shape)
-    print(x_test_noise.shape)
-
-
-    history = ae.fit(x_train_noise, x_train, epochs=10,batch_size=256,shuffle=True,validation_data=(x_test_noise, x_test))
-    return history
 
 
 if __name__ == "__main__":
-    train()
+    input_image = Input(shape=(28,28,1))
     
+    x_train, x_test = load_dataset()
+    x_train_noise, x_test_noise = generate_noisy_data(x_train, x_test)
+    encoded_image = encode(input_image)
+    decoded_image = decode(encoded_image)
+    ae = autoencoder(input_image, decoded_image)
+    history = ae.fit(x_train_noise, x_train, epochs=5,batch_size=256,shuffle=True,validation_data=(x_test_noise, x_test))
+
+    encoder = Model(inputs=input_image, outputs=encoded_image)
+
+    encoded_input = Input(shape=(7,7,32))
+
+    decoder1 = ae.layers[-5]
+    decoder2 = ae.layers[-4]
+    decoder3 = ae.layers[-3]
+    decoder4 = ae.layers[-2]
+    decoder5 = ae.layers[-1]
+    decoder = Model(inputs=encoded_input, outputs=decoder5(decoder4(decoder3(decoder2(decoder1(encoded_input))))))
+    decoder.summary()
+    
+
+        
+# run noisy test data through the encoder
+    encoded_imgs = encoder.predict(x_test_noise)
+
+# run encoded noisy test image back through the decoder
+    decoded_imgs = decoder.predict(encoded_imgs)
+
+# make sense of the shapes
+    print(encoded_imgs.shape)
+    print(decoded_imgs.shape)
+
+    # display the images
+    n = 10
+    plt.figure(figsize=(30,6))
+    for i in range(n):
+      # noisy images
+      ax = plt.subplot(3,n,i+1)
+      plt.imshow(x_test_noise[i].reshape(28,28))
+      plt.gray()
+      ax.get_xaxis().set_visible(False)
+      ax.get_yaxis().set_visible(False)
+
+      # denoised images
+      ax = plt.subplot(3,n,i+1+n)
+      plt.imshow(decoded_imgs[i].reshape(28,28))
+      plt.gray()
+      ax.get_xaxis().set_visible(False)
+      ax.get_yaxis().set_visible(False)
+
+      # original images
+      ax = plt.subplot(3,n,i+1+n*2)
+      plt.imshow(x_test[i].reshape(28,28))
+      plt.gray()
+      ax.get_xaxis().set_visible(False)
+      ax.get_yaxis().set_visible(False)
+    plt.show()
