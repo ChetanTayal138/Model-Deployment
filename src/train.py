@@ -56,64 +56,72 @@ def autoencoder(input_image, decoded):
     return ae
 
 
-
-
 if __name__ == "__main__":
+
     input_image = Input(shape=(28,28,1))
+    encoded_input = Input(shape=(7,7,32))
     
+
+    # Load dataset 
     x_train, x_test = load_dataset()
+
+    # Generate noisy dataset
     x_train_noise, x_test_noise = generate_noisy_data(x_train, x_test)
+    
+    # Generate encodede image shape
     encoded_image = encode(input_image)
+
+    # Generate decoded image shape
     decoded_image = decode(encoded_image)
+
+    # Instantiate utoencoder model
     ae = autoencoder(input_image, decoded_image)
+
+    # Run training loop
     history = ae.fit(x_train_noise, x_train, epochs=5,batch_size=256,shuffle=True,validation_data=(x_test_noise, x_test))
 
+    # Create Encoder and save it
     encoder = Model(inputs=input_image, outputs=encoded_image)
+    #encoder.save("models/encoder/")
 
-    encoded_input = Input(shape=(7,7,32))
-
-    decoder1 = ae.layers[-5]
-    decoder2 = ae.layers[-4]
-    decoder3 = ae.layers[-3]
-    decoder4 = ae.layers[-2]
-    decoder5 = ae.layers[-1]
+    # Create Decoder and save it
+    
+    decoder1, decoder2, decoder3, decoder4, decoder5 = ae.layers[-5:]
     decoder = Model(inputs=encoded_input, outputs=decoder5(decoder4(decoder3(decoder2(decoder1(encoded_input))))))
-    decoder.summary()
+    #decoder.save("models/decoder")
     
 
-        
-# run noisy test data through the encoder
+    # Show structure of the decoder 
+    decoder.summary()
+    print("X TEST SHAPE")
+    print(x_test_noise.shape)
+    # run noisy test data through the encoder
     encoded_imgs = encoder.predict(x_test_noise)
-
-# run encoded noisy test image back through the decoder
+    # run encoded noisy test image back through the decoder
     decoded_imgs = decoder.predict(encoded_imgs)
 
-# make sense of the shapes
+    # make sense of the shapes
     print(encoded_imgs.shape)
     print(decoded_imgs.shape)
 
     # display the images
-    n = 10
+    """n = 100
     plt.figure(figsize=(30,6))
     for i in range(n):
       # noisy images
       ax = plt.subplot(3,n,i+1)
       plt.imshow(x_test_noise[i].reshape(28,28))
+      plt.imsave(f"./data/test_{i}.jpg", x_test_noise[i].reshape(28,28))
       plt.gray()
-      ax.get_xaxis().set_visible(False)
-      ax.get_yaxis().set_visible(False)
-
+      
       # denoised images
       ax = plt.subplot(3,n,i+1+n)
       plt.imshow(decoded_imgs[i].reshape(28,28))
       plt.gray()
-      ax.get_xaxis().set_visible(False)
-      ax.get_yaxis().set_visible(False)
-
+      
       # original images
       ax = plt.subplot(3,n,i+1+n*2)
       plt.imshow(x_test[i].reshape(28,28))
       plt.gray()
-      ax.get_xaxis().set_visible(False)
-      ax.get_yaxis().set_visible(False)
-    plt.show()
+
+    plt.show()"""
