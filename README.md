@@ -9,9 +9,9 @@ Hello and welcome to this class on model deployment! We will be going through th
 
 Git is a version controlling tool that helps track changes in code, collaborative development and many other advantages. For now we need git just for the sake of getting this repo on your machine. For now, we need git only for cloning the repository to your machine.
 
-    1. Install git from https://git-scm.com/downloads.
+1. Install git from https://git-scm.com/downloads.
 
-    2. Clone this repository to your machine using
+2. Clone this repository to your machine using
             
             git clone https://github.com/ChetanTayal138/Model-Deployment.git
 
