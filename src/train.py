@@ -61,7 +61,6 @@ if __name__ == "__main__":
     input_image = Input(shape=(28,28,1))
     encoded_input = Input(shape=(7,7,32))
     
-
     # Load dataset 
     x_train, x_test = load_dataset()
 
@@ -82,15 +81,13 @@ if __name__ == "__main__":
 
     # Create Encoder and save it
     encoder = Model(inputs=input_image, outputs=encoded_image)
-    #encoder.save("models/encoder/")
+    encoder.save("models/encoder/")
 
     # Create Decoder and save it
-    
     decoder1, decoder2, decoder3, decoder4, decoder5 = ae.layers[-5:]
     decoder = Model(inputs=encoded_input, outputs=decoder5(decoder4(decoder3(decoder2(decoder1(encoded_input))))))
-    #decoder.save("models/decoder")
+    decoder.save("models/decoder")
     
-
     # Show structure of the decoder 
     decoder.summary()
     print("X TEST SHAPE")
@@ -105,13 +102,13 @@ if __name__ == "__main__":
     print(decoded_imgs.shape)
 
     # display the images
-    """n = 100
+    n = 100
     plt.figure(figsize=(30,6))
     for i in range(n):
       # noisy images
       ax = plt.subplot(3,n,i+1)
       plt.imshow(x_test_noise[i].reshape(28,28))
-      plt.imsave(f"./data/test_{i}.jpg", x_test_noise[i].reshape(28,28))
+      #plt.imsave(f"./data/test_{i}.jpg", x_test_noise[i].reshape(28,28)) #saving these images for creating client data
       plt.gray()
       
       # denoised images
@@ -124,4 +121,4 @@ if __name__ == "__main__":
       plt.imshow(x_test[i].reshape(28,28))
       plt.gray()
 
-    plt.show()"""
+    plt.show()

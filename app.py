@@ -24,6 +24,7 @@ def before_first_request():
     decoder = keras.models.load_model("models/decoder")
     print("LOADED MODELS")
 
+
 @app.route('/', methods=["GET", "POST"])
 def upload_file():
     """Renders page for uploading the image."""
@@ -45,6 +46,7 @@ def image_classifier(filename):
     """Carries out conversion from noisy to clean image."""
     upload_path = os.path.join("static/uploads", filename)
     save_path = os.path.join("static/predictions", filename)
+
     
     img = plt.imread(upload_path)/255. # Divide by 255. to normalize pixel values between 0 and 1 as our model has been trained on the same distribution
     r,g,b = img[:,:,0], img[:,:,1], img[:,:,2]
@@ -57,13 +59,17 @@ def image_classifier(filename):
     encoded_imgs = encoder.predict(imgs)
     # Decode image through decoder block that has the layers made up from our trained autoencoder
     decoded_imgs = decoder.predict(encoded_imgs)
+    prediction = decoded_imgs[0].reshape(28,28)
     
-
+    kernel = np.ones((2,2), np.float)
+    prediction = cv2.erode(decoded_imgs[0].reshape(28,28), kernel)
+    prediction = cv2.convertScaleAbs(prediction, alpha=1.5, beta=0)
+    
     # Save the result in our predictions folder
-    plt.imsave(save_path, decoded_imgs[0].reshape(28,28))
+    plt.imsave(save_path, prediction)
 
     return render_template('index.html', noisy_image=upload_path,denoised_image=save_path)
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port='5000', debug=True)
+    app.run(host='0.0.0.0', port='80', debug=True)
