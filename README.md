@@ -5,7 +5,17 @@ Hello and welcome to this class on model deployment! We will be going through th
 ## Pre-Requisites 
 
 
-### 1. Anaconda 
+### 1. Git 
+
+Git is a version controlling tool that helps track changes in code, collaborative development and many other advantages. For now we need git just for the sake of getting this repo on your machine. For now, we need git only for cloning the repository to your machine.
+
+    1. Install git from https://git-scm.com/downloads.
+
+    2. Clone this repository to your machine using
+            
+            git clone https://github.com/ChetanTayal138/Model-Deployment.git
+
+### 2. Anaconda 
 
 First things first, lets help you create an isolated environment with all project requirements. This will prevent conflicts between different dependencies between different projects on your machine, letting you create projects in a controlled manner. My preferred environment manager for deep learning projects is conda.
 
@@ -21,9 +31,13 @@ First things first, lets help you create an isolated environment with all projec
 
                     conda --version
 
-3. Create a new conda environment with python-3.7, flask and tensorflow using the following command. 
+3. Generally if you wanted to create a new conda environment with python-3.7, flask and tensorflow you could use the following command. 
 
                     conda create -n 'your-env-name' python=3.7 tensorflow flask 
+
+Another way is to make use of a yaml file which will create the environment for you. It uses the dependencies mentioned in the yaml file to create the environment. The `environment.yaml` file in this repository corresponds to this configuration file. Run the following command to create the environment.
+
+                    conda env create -f environment.yaml
 
 4. Activate the conda environment using 
             
@@ -33,30 +47,10 @@ First things first, lets help you create an isolated environment with all projec
 
 ![verification_image](https://github.com/ChetanTayal138/Model-Deployment/blob/master/images/verify_tensorflow.png)
 
+### 3. Docker
 
-### 2. Git 
+Docker is used for creating containers that allows us to package an application and all ofits dependencies into one place. This allows us to build a piece of software on one machine and run that piece of software in any machine, without typically worrying about what hardware/firmware/OS is being utilized by the machine running the container. 
 
-Git is a version controlling tool that helps track changes in code, collaborative development and many other advantages. For now we need git just for the sake of getting this repo on your machine. For now, we need git only for cloning the repository to your machine.
-
-    1. Install git from https://git-scm.com/downloads.
-
-    2. Clone this repository to your machine using
-            
-            git clone https://github.com/ChetanTayal138/Model-Deployment.git
-
-
-
-    
-
-
-
-
-
-
-
-
-            
-
-
+You can install docker on your machine by following the guide here : https://docs.docker.com/get-docker/
 
 
