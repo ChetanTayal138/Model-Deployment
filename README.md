@@ -53,4 +53,40 @@ Docker is used for creating containers that allows us to package an application 
 
 You can install docker on your machine by following the guide here : https://docs.docker.com/get-docker/
 
+## Train and Save
 
+We first train and save the models that will act as our encoder and decoder modules. Run the following command to start the training process
+
+            python3 src/train.py
+
+This saves our encoder and decoder blocks inside the `models` folder. We will load the models from these folders in our flask application
+
+
+## Start Flask Applicaton
+
+We now use flask as a means to serve our saved models. We start the flask application using
+
+            python3 app.py
+
+This starts the web application on a local web server at http://localhost:5000/ 
+
+You can open up this link in your web browser and you should be able to view the application and an option to upload an image. Upload a test image from the `data` folder in the prompt and click on SUBMIT. You should recieve a response back now with the noisy image you uploaded as well as the denoised and cleaned image. 
+
+You can go ahead and stop the server by pressing CTRL+C in the command line.
+
+## Building the docker image
+
+
+Before building the docker image, change the port inside the app.py file to 80 instead of 5000. Then build the docker image using the following command 
+
+            docker build . -t <name-of-your-container>
+
+We can now run the docker image as a container using 
+
+            docker run -d -p 5000:80 <name-of-your-container>
+
+We pass the -d parameter to run the container in the background. You can now see all the containers running on your machine using 
+
+            docker container ls
+
+The web application is deployed on port 5000 just like before. Go over to http://localhost:5000/ to view the application, which has now been deployed using a docker container!
