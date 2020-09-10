@@ -2,8 +2,8 @@
 
 Hello and welcome to this class on model deployment! We will be going through the process of understanding how model deployment works, basics of container technology, how models are served in production environments and help you deploy your first deep learning web application. Below are some pre-requisites for you to go through that will help us conduct the class in a smooth manner. Make sure to go through the steps and setup your machine. Happy Coding!
 
-## Pre-Requisites 
 
+# Pre-Requisites 
 
 ### 1. Git 
 
@@ -31,13 +31,9 @@ First things first, lets help you create an isolated environment with all projec
 
                     conda --version
 
-3. Generally if you wanted to create a new conda environment with python-3.7, flask and tensorflow you could use the following command. 
+3. Generally if you wanted to create a new conda environment with python-3.7, flask and tensorflow you could use the following command `conda create -n 'your-env-name' python=3.7 tensorflow flask`. Another way is to make use of a yaml file which will create the environment for you. It uses the dependencies mentioned in the yaml file to create the environment. The `environment.yaml` file in this repository corresponds to this configuration file. Run the following command to create the environment.
 
-                    conda create -n 'your-env-name' python=3.7 tensorflow flask 
-
-Another way is to make use of a yaml file which will create the environment for you. It uses the dependencies mentioned in the yaml file to create the environment. The `environment.yaml` file in this repository corresponds to this configuration file. Run the following command to create the environment.
-
-                    conda env create -f environment.yaml
+                    conda env create -f environment.yml
 
 4. Activate the conda environment using 
             
@@ -53,29 +49,37 @@ Docker is used for creating containers that allows us to package an application 
 
 You can install docker on your machine by following the guide here : https://docs.docker.com/get-docker/
 
-## Train and Save
+
+# Train and Save
 
 We first train and save the models that will act as our encoder and decoder modules. Run the following command to start the training process
 
             python3 src/train.py
 
-This saves our encoder and decoder blocks inside the `models` folder. We will load the models from these folders in our flask application
+This saves our encoder and decoder blocks inside the `models` folder. We will load the models from these folders in our flask application.
 
 
-## Start Flask Applicaton
+# Start Flask Applicaton
 
-We now use flask as a means to serve our saved models. We start the flask application using
+We now use flask as a means to serve our saved models. The first step is to set the environment variable `FLASK_APP` to the name of the file hosting our flask application. In this case, the file is `app.py`.
+Use the following commands based on your machine to set the variable :-
 
-            python3 app.py
+### Linux/MacOS
 
-This starts the web application on a local web server at http://localhost:5000/ 
+            export FLASK_APP=app.py
 
-You can open up this link in your web browser and you should be able to view the application and an option to upload an image. Upload a test image from the `data` folder in the prompt and click on SUBMIT. You should recieve a response back now with the noisy image you uploaded as well as the denoised and cleaned image. 
+### Windows
 
-You can go ahead and stop the server by pressing CTRL+C in the command line.
+            set FLASK_APP=app.py
 
-## Building the docker image
+We can now run the flask application. Pass the --port argument to specify the port on which the application will run. This starts the web application on a local web server at http://localhost:5000/ 
 
+            flask run --port 5000
+
+You can open up this link in your web browser and you should be able to view the application and an option to upload an image. Upload a test image from the `data` folder in the prompt and click on SUBMIT. You should recieve a response back now with the noisy image you uploaded as well as the denoised and cleaned image. You can go ahead and stop the server by pressing CTRL+C in the command line.
+
+
+# Building the docker image
 
 Before building the docker image, change the port inside the app.py file to 80 instead of 5000. Then build the docker image using the following command 
 
@@ -90,3 +94,5 @@ We pass the -d parameter to run the container in the background. You can now see
             docker container ls
 
 The web application is deployed on port 5000 just like before. Go over to http://localhost:5000/ to view the application, which has now been deployed using a docker container!
+
+
