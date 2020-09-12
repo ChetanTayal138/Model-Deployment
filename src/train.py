@@ -3,7 +3,7 @@ from keras.datasets import mnist
 from keras.layers import MaxPooling2D, Conv2D, UpSampling2D, Input
 import numpy as np
 import matplotlib.pyplot as plt
-
+import argparse
 
 
 def load_dataset():
@@ -43,8 +43,8 @@ def encode(input_image):
 
 def decode(encoded_image):
     x = Conv2D(32,3,activation='relu',padding='same')(encoded_image)
-    x = UpSampling2D((2,2))(x)
-    x = Conv2D(32,3,activation='relu',padding='same')(x)
+    x = UpSampling2D((2,2))(x) 
+    x = Conv2D(32,3,activation='relu',padding='same')(x) 
     x = UpSampling2D((2,2))(x)
     x = Conv2D(1,3,activation='sigmoid',padding='same')(x)
     
@@ -57,6 +57,24 @@ def autoencoder(input_image, decoded):
 
 
 if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+            "--epochs",
+            help="number of iterations to run training for",
+            type=int,
+            default=5
+            )
+    parser.add_argument(
+            "--batch_size",
+            help="size of your training batch",
+            type=int,
+            default=32
+            )
+    args = parser.parse_args()
+
+    epochs = args.epochs
+    batch_size = args.batch_size
 
     input_image = Input(shape=(28,28,1))
     encoded_input = Input(shape=(7,7,32))
@@ -77,7 +95,7 @@ if __name__ == "__main__":
     ae = autoencoder(input_image, decoded_image)
 
     # Run training loop
-    history = ae.fit(x_train_noise, x_train, epochs=5,batch_size=256,shuffle=True,validation_data=(x_test_noise, x_test))
+    history = ae.fit(x_train_noise, x_train, epochs=epochs, batch_size=batch_size, shuffle=True,validation_data=(x_test_noise, x_test))
 
     # Create Encoder and save it
     encoder = Model(inputs=input_image, outputs=encoded_image)
@@ -90,25 +108,20 @@ if __name__ == "__main__":
     
     # Show structure of the decoder 
     decoder.summary()
-    print("X TEST SHAPE")
-    print(x_test_noise.shape)
+    
     # run noisy test data through the encoder
     encoded_imgs = encoder.predict(x_test_noise)
     # run encoded noisy test image back through the decoder
     decoded_imgs = decoder.predict(encoded_imgs)
 
-    # make sense of the shapes
-    print(encoded_imgs.shape)
-    print(decoded_imgs.shape)
-
     # display the images
-    n = 100
+    n = 10
     plt.figure(figsize=(30,6))
     for i in range(n):
       # noisy images
       ax = plt.subplot(3,n,i+1)
       plt.imshow(x_test_noise[i].reshape(28,28))
-      #plt.imsave(f"./data/test_{i}.jpg", x_test_noise[i].reshape(28,28)) #saving these images for creating client data
+      plt.imsave(f"./data/test_{i}.jpg", x_test_noise[i].reshape(28,28)) #saving these images for creating client data
       plt.gray()
       
       # denoised images

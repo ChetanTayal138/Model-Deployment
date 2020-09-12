@@ -1,4 +1,6 @@
-FROM tensorflow/tensorflow:2.2.0
+ARG TF_VERSION=2.2.0
+
+FROM tensorflow/tensorflow:${TF_VERSION}
 
 RUN apt-get update -y &&\apt-get install -y python3-pip python3-dev &&\apt-get install -y libsm6 libxext6 libxrender-dev libgl1-mesa-glx
 
