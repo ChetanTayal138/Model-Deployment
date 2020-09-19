@@ -23,4 +23,4 @@ steps:
   id: Push
   args:
   - 'push'
-  - 'gcr.io/$PROJECT_ID/hello-cloudbuild:$SHORT_SHA'
+  - 'gcr.io/$PROJECT_ID/denoiser-cloudbuild:$SHORT_SHA'
