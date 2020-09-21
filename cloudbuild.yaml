@@ -24,7 +24,7 @@ steps:
   
 substitutions:
     #GCP Specific configuration. Please DON'T change anything
-    _PROJECT: my-first-project
+    _PROJECT: titanium-genre-289705
     _ZONE: us-central1-c
     _GKE_CLUSTER: denoiser-cluster
     
