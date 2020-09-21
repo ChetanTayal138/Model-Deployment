@@ -29,7 +29,7 @@ substitutions:
     _GKE_CLUSTER: denoiser-cluster
     
     #Repository Specific configuration. DevOps can change this settings
-    _DEPLOYMENTNAME: denoiser-app-service
+    _DEPLOYMENTNAME: denoiser-app
     _CONTAINERNAME: denoiser-app
     _REPO_NAME: denoiser-app
     
