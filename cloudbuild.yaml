@@ -1,26 +1,41 @@
 steps:
-# This step runs the unit tests on the app
-- name: 'python:3.7-slim'
-  id: Test
-  entrypoint: /bin/sh
-  args:
-  - -c
-  - 'echo "Run Test Here"'
+#First Clone from Google Cloud Source Repository  
+- name: 'gcr.io/cloud-builders/git'
+  args: ['clone','https://github.com/ChetanTayal138/Model-Deployment']
 
-# This step builds the container image.
+#Build the image 
 - name: 'gcr.io/cloud-builders/docker'
-  id: Build
-  args:
-  - 'build'
-  - '-t'
-  - 'gcr.io/$PROJECT_ID/denoiser-cloudbuild:$SHORT_SHA'
-  - '.'
+  args: ['build','-t','gcr.io/${_PROJECT}/${_CONTAINERNAME}:${_VERSION}','.']
 
-# This step pushes the image to Container Registry
-# The PROJECT_ID and SHORT_SHA variables are automatically
-# replaced by Cloud Build.
+#Push the image  
 - name: 'gcr.io/cloud-builders/docker'
-  id: Push
+  args: ['push','gcr.io/${_PROJECT}/${_CONTAINERNAME}:${_VERSION}']
+  
+#Update the container image using kubectl set
+- name: 'gcr.io/cloud-builders/kubectl'
   args:
-  - 'push'
-  - 'gcr.io/$PROJECT_ID/hello-cloudbuild:$SHORT_SHA'
+  - 'set'
+  - 'image'
+  - 'deployment/${_DEPLOYMENTNAME}'
+  - '${_CONTAINERNAME}=gcr.io/${_PROJECT}/${_CONTAINERNAME}:${_VERSION}'
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=${_ZONE}'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER}'
+  
+substitutions:
+    #GCP Specific configuration. Please DON'T change anything
+    _PROJECT: my-first-project
+    _ZONE: us-central1-c
+    _GKE_CLUSTER: denoiser-cluster
+    
+    #Repository Specific configuration. DevOps can change this settings
+    _DEPLOYMENTNAME: denoiser-app-service
+    _CONTAINERNAME: denoiser-app
+    _REPO_NAME: denoiser-app
+    
+    # Developers ONLY change
+    _VERSION: v3
+    
+options:
+    substitution_option: 'ALLOW_LOOSE'
+
