@@ -97,7 +97,5 @@ The web application is deployed on port 5000 just like before. Go over to http:/
 
 
 
-# GCP
 
-Now go over to this [link](https://www.youtube.com/watch?v=dQw4w9WgXcQ) to authenticate other users with your GCP cluster application
 
