@@ -14,8 +14,6 @@ steps:
 #Update the container image using kubectl set
 - name: 'gcr.io/cloud-builders/kubectl'
   args:
-  - 'push'
-  - 'gcr.io/$PROJECT_ID/denoiser-cloudbuild:$SHORT_SHA'
   - 'set'
   - 'image'
   - 'deployment/${_DEPLOYMENTNAME}'
