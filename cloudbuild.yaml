@@ -29,7 +29,7 @@ substitutions:
     _GKE_CLUSTER: cluster-1
     
     #Repository Specific configuration. DevOps can change this settings
-    _DEPLOYMENTNAME: denoising-app-service
+    _DEPLOYMENTNAME: denoising-app
     _CONTAINERNAME: denoising-app
     _REPO_NAME: denoising-app
     
