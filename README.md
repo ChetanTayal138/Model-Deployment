@@ -96,3 +96,8 @@ We pass the -d parameter to run the container in the background. You can now see
 The web application is deployed on port 5000 just like before. Go over to http://localhost:5000/ to view the application, which has now been deployed using a docker container!
 
 
+
+# GCP
+
+Now go over to this [link](https://www.youtube.com/watch?v=dQw4w9WgXcQ) to authenticate other users with your GCP cluster application
+
