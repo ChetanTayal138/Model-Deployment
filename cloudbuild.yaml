@@ -26,7 +26,7 @@ substitutions:
     #GCP Specific configuration. Please DON'T change anything
     _PROJECT: videorecorder-274721
     _ZONE: us-central1-c
-    _GKE_CLUSTER: cluster-1
+    _GKE_CLUSTER: denoiser-cluster
     
     #Repository Specific configuration. DevOps can change this settings
     _DEPLOYMENTNAME: denoiser-app
