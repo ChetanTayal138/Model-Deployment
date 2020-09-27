@@ -23,7 +23,7 @@ steps:
   - 'CLOUDSDK_CONTAINER_CLUSTER=${_GKE_CLUSTER}'
   
 substitutions:
-    #GCP Specific configuration. Please DON'T change anything
+    #GCP Specific configuration. Change to your own specific needs.
     _PROJECT: videorecorder-274721
     _ZONE: us-central1-c
     _GKE_CLUSTER: denoiser-cluster
