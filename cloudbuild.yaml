@@ -34,7 +34,7 @@ substitutions:
     _REPO_NAME: denoiser-app
     
     # Developers ONLY change
-    _VERSION: v3
+    _VERSION: v4
     
 options:
     substitution_option: 'ALLOW_LOOSE'
